@@ -22,6 +22,7 @@ const InputCompt = ({
   placeholder,
   style,
   maxLength,
+  wrapperstyle,
   ...rest
 }) => {
   const [secure, setSecure] = useState(isPassword);
@@ -30,7 +31,7 @@ const InputCompt = ({
     <View style={[styles.container, style]}>
       {label ? <Text style={styles.label}>{label}</Text> : null}
 
-      <View style={styles.inputWrapper}>
+      <View style={[styles.inputWrapper, wrapperstyle]}>
         {/* Left Side Image */}
         {leftImage && (
           <Image
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.WHITE,
   },
   leftIcon: {
     width: 20,
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     paddingVertical: 10,
-    fontSize: 14,
-    color: '#000',
+    fontSize: 15,
+    color: Colors.BLACK,
     fontFamily: Fonts.PoppinsRegular,
   },
   rightIcon: {

@@ -183,7 +183,7 @@ const useAttdance = () => {
         navigation.goBack();
         setPhoto(null);
       } else {
-        showErrorToast('Check In Failed', response?.data?.message);
+        showErrorToast(response?.data?.message);
       }
     } catch (error) {
       console.error(error);

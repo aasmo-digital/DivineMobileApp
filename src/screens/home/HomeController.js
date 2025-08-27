@@ -108,6 +108,7 @@ import {userLogout} from '../../redux/reducer/LoginReducer';
 import {useLocationController} from '../../hooks/useLocationController';
 import ApiRequest from '../../network/ApiRequest';
 import {ApiRoutes} from '../../utils/ApiRoutes';
+import {showErrorToast} from '../../utils/HelperFuntions';
 
 const HomeController = () => {
   const navigation = useNavigation();
@@ -154,7 +155,7 @@ const HomeController = () => {
         setMyTasks(response?.data);
       } else {
         setTaskLoading(false);
-
+        showErrorToast(response?.data?.message);
         console.error('Server error:', response?.message);
       }
     } catch (error) {

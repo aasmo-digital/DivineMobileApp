@@ -1,12 +1,13 @@
 import ApiRequest from '../../network/ApiRequest';
 import {ApiRoutes} from '../../utils/ApiRoutes';
-import {launchImageLibrary} from 'react-native-image-picker';
+// import {launchImageLibrary} from 'react-native-image-picker';
 import Geolocation from 'react-native-geolocation-service';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {showSuccessToast} from '../../utils/HelperFuntions';
+import {showErrorToast, showSuccessToast} from '../../utils/HelperFuntions';
 import {Alert} from 'react-native';
 import {useSelector} from 'react-redux';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const useSubmitTask = () => {
   const [title, setTitle] = useState('');
@@ -22,22 +23,74 @@ const useSubmitTask = () => {
 
   const navigation = useNavigation();
 
+  // const pickImage = () => {
+  //   const options = {
+  //     mediaType: 'photo',
+  //     quality: 0.7,
+  //   };
+  //   launchImageLibrary(options, response => {
+  //     if (response.didCancel) {
+  //       console.log('User cancelled image picker');
+  //     } else if (response.errorCode) {
+  //       console.log('ImagePicker Error: ', response.errorMessage);
+  //     } else if (response.assets && response.assets.length > 0) {
+  //       setPhoto(response.assets[0]);
+  //       // Clear photo error when an image is selected
+  //       setError(prev => ({...prev, photoError: ''}));
+  //     }
+  //   });
+  // };
+
   const pickImage = () => {
-    const options = {
-      mediaType: 'photo',
-      quality: 0.7,
-    };
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorMessage);
-      } else if (response.assets && response.assets.length > 0) {
-        setPhoto(response.assets[0]);
-        // Clear photo error when an image is selected
-        setError(prev => ({...prev, photoError: ''}));
-      }
-    });
+    Alert.alert(
+      'Upload Proof',
+      'Choose an option',
+      [
+        {
+          text: 'Camera',
+          onPress: () => {
+            const options = {
+              mediaType: 'photo',
+              quality: 0.7,
+            };
+            launchCamera(options, response => {
+              if (response.didCancel) {
+                console.log('User cancelled camera');
+              } else if (response.errorCode) {
+                console.log('Camera Error: ', response.errorMessage);
+              } else if (response.assets && response.assets.length > 0) {
+                setPhoto(response.assets[0]);
+                setError(prev => ({...prev, photoError: ''}));
+              }
+            });
+          },
+        },
+        {
+          text: 'Gallery',
+          onPress: () => {
+            const options = {
+              mediaType: 'photo',
+              quality: 0.7,
+            };
+            launchImageLibrary(options, response => {
+              if (response.didCancel) {
+                console.log('User cancelled gallery');
+              } else if (response.errorCode) {
+                console.log('Gallery Error: ', response.errorMessage);
+              } else if (response.assets && response.assets.length > 0) {
+                setPhoto(response.assets[0]);
+                setError(prev => ({...prev, photoError: ''}));
+              }
+            });
+          },
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ],
+      {cancelable: true},
+    );
   };
 
   const validate = () => {
@@ -91,17 +144,14 @@ const useSubmitTask = () => {
             token: token,
           });
 
-          console.log('--------', response);
+          console.log('--------', response?.data?.message);
 
           if (response?.status == '200' || response?.status == '201') {
-            // Alert.alert('Success', 'Task submitted successfully!');
-
             showSuccessToast('Success', 'Task submitted successfully!');
 
             navigation.goBack();
           } else {
-            // Handle non-200 success responses if your API has them
-            Alert.alert('Error', response?.message || 'Failed to submit task.');
+            showErrorToast(response?.data?.message);
           }
         } catch (error) {
           Alert.alert('Error', 'An unexpected error occurred.');

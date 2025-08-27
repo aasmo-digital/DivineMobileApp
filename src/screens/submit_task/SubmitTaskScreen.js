@@ -1,20 +1,6 @@
-import React, {useState} from 'react';
-import {
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  Alert,
-  Text,
-  Image,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
-import Geolocation from 'react-native-geolocation-service';
-import {useSelector} from 'react-redux';
-import ApiRequest from '../../network/ApiRequest';
-import {ApiRoutes} from '../../utils/ApiRoutes';
+import React from 'react';
+import {Text, Image, TouchableOpacity, SafeAreaView} from 'react-native';
+
 import {
   ButtonCompt,
   HeaderCompt,
@@ -22,7 +8,6 @@ import {
   PageContainer,
 } from '../../components';
 
-import {showSuccessToast} from '../../utils/HelperFuntions';
 import styles from './style';
 import useSubmitTask from './useSubmitTask';
 
@@ -72,6 +57,7 @@ const SubmitTaskScreen = ({navigation}) => {
             }
           }}
           multiline
+          wrapperstyle={{height: 120, alignItems: 'flex-start'}}
         />
         {!!error.descriptionError && (
           <Text style={styles.errorText}>{error.descriptionError}</Text>
