@@ -1,5 +1,5 @@
 // src/screens/HomeScreen/HomeScreen.js
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -18,9 +18,12 @@ import Last3Month from './Last3Month';
 import {useFocusEffect} from '@react-navigation/native';
 import {PageContainer} from '../../components'; // Assuming PageContainer is a common component
 import HomeController from './HomeController';
+import useProfile from '../profile/useProfile';
+import { useSelector } from 'react-redux';
 
 const HomeScreen = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+ 
 
   // Use your HomeController hook
   const {
@@ -32,6 +35,7 @@ const HomeScreen = () => {
     setShowLogoutPopup,
     onLogout,
   } = HomeController();
+  const {getEmployeeInfo} = useProfile();
 
   // Call refreshLocation when HomeScreen comes into focus
   useFocusEffect(
@@ -64,6 +68,10 @@ const HomeScreen = () => {
         return null;
     }
   };
+
+  useEffect(() => {
+    getEmployeeInfo();
+  }, []);
 
   return (
     <PageContainer>

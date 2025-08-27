@@ -6,19 +6,16 @@ import {
   StatusBar,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import {Formik} from 'formik';
-
 import {ButtonCompt, InputCompt} from '../../components';
-
 import LoginController from './LoginController';
 import imageindex from '../../assets/images/imageindex';
 import styles from './login.styls';
 import {Colors} from '../../theme/colors';
 import Fonts from '../../theme/Fonts';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = () => {
   const {isLoading, handleAppSubmit, AppValidationSchema} = LoginController();
 
   return (
@@ -82,13 +79,6 @@ const LoginScreen = ({navigation}) => {
                 {touched.password && errors.password && (
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
-
-                {/* <TouchableOpacity
-                  style={{alignSelf: 'flex-end'}}
-                  activeOpacity={0.7}
-                  onPress={() => navigation.navigate('ForgotPassword')}>
-                  <Text style={styles.forgottext}>Forget Password ?</Text>
-                </TouchableOpacity> */}
 
                 <ButtonCompt
                   title="Login"

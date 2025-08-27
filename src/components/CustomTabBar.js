@@ -67,7 +67,9 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
               size={26}
               color={isFocused ? Colors.APPCOLOR : Colors.GRAY}
             />
-            <Text style={[styles.label, isFocused && {color: Colors.APPCOLOR}]}>
+            <Text
+              allowFontScaling={true}
+              style={[styles.label, isFocused && {color: Colors.APPCOLOR}]}>
               {label}
             </Text>
           </TouchableOpacity>
@@ -80,10 +82,12 @@ const CustomTabBar = ({state, descriptors, navigation}) => {
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: Colors.WHITE,
     elevation: 5,
     borderTopWidth: 0.5,
-    borderTopColor: '#ccc',
+    borderTopColor: Colors.LIGHT_GRAY,
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
   },
   tab: {
     flex: 1,

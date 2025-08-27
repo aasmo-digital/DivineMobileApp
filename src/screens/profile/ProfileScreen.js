@@ -1,24 +1,12 @@
-import React, {useCallback, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {Text, View, ScrollView, Image, ActivityIndicator} from 'react-native';
 import {HeaderCompt, PageContainer} from '../../components';
-import ApiRequest from '../../network/ApiRequest';
-import {ApiRoutes} from '../../utils/ApiRoutes';
-import {formatDate, showErrorToast} from '../../utils/HelperFuntions';
+import {formatDate} from '../../utils/HelperFuntions';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
-
 import {AppConstant} from '../../utils/AppConstant';
 import styles from './styles.profile';
 import {Colors} from '../../theme/colors';
+import useProfile from './useProfile';
 
 // IMPORTANT: Replace this with your actual API's base URL for images
 const BASE_IMAGE_URL = AppConstant.BASEURL;
@@ -26,7 +14,12 @@ const BASE_IMAGE_URL = AppConstant.BASEURL;
 // Reusable component for displaying a row of information
 const InfoRow = ({icon, label, value}) => (
   <View style={styles.infoRow}>
-    <MaterialIcons name={icon} size={24} color="#555" style={styles.infoIcon} />
+    <MaterialIcons
+      name={icon}
+      size={24}
+      color={Colors.GRAY}
+      style={styles.infoIcon}
+    />
     <View style={styles.infoTextContainer}>
       <Text style={styles.infoLabel}>{label}</Text>
       <Text style={styles.infoValue}>{value || 'N/A'}</Text>
@@ -35,50 +28,11 @@ const InfoRow = ({icon, label, value}) => (
 );
 
 const ProfileScreen = () => {
-  const [profileData, setProfileData] = useState(null);
-  const [error, setError] = useState(false);
+  const {getEmployeeInfo, loading, profileData, error, setError} = useProfile();
 
-  console.log('---------profileData------', profileData);
-  const [loading, setLoading] = useState(true);
-  const token = useSelector(state => state?.user?.token);
-
-  const getEmployeeInfo = async () => {
-    try {
-      setLoading(true);
-      const response = await ApiRequest({
-        BASEURL: ApiRoutes.getEmployeeInfo,
-        method: 'GET',
-        token: token,
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        setProfileData(response.data);
-
-        // console.log('-------propfileDatra', response.data);
-      } else {
-        showErrorToast('Failed to fetch profile', response?.message);
-        console.error('Server error:', response?.message);
-      }
-    } catch (error) {
-      showErrorToast('An error occurred', 'Please check your connection.');
-      console.error('Fetch Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      getEmployeeInfo();
-    }, []),
-  );
-
-  // Helper function to format date string
-  //   const formatDate = dateString => {
-  //     if (!dateString) return 'N/A';
-  //     const options = {year: 'numeric', month: 'long', day: 'numeric'};
-  //     return new Date(dateString).toLocaleDateString(undefined, options);
-  //   };
+  useEffect(() => {
+    getEmployeeInfo();
+  }, []);
 
   if (loading) {
     return (
@@ -122,7 +76,7 @@ const ProfileScreen = () => {
                 : `${BASE_IMAGE_URL}${profileData.profilePhotoUrl}`,
             }}
             style={styles.profileImage}
-            onError={e => setError(true)} // ❌ अगर image load fail होगी तो fallback set हो जाएगा
+            onError={e => setError(true)}
           />
 
           <Text style={styles.profileName}>{profileData.fullName}</Text>

@@ -231,11 +231,41 @@ const AttendanceCard = ({item}) => {
   const [checkOutAddress, setCheckOutAddress] = useState('');
 
   useEffect(() => {
+    // const getAddressFromCoords = async (latitude, longitude, setAddress) => {
+    //   if (!latitude || !longitude) {
+    //     setAddress('Location not provided');
+    //     return;
+    //   }
+    //   try {
+    //     const response = await axios.get(
+    //       `https://nominatim.openstreetmap.org/reverse`,
+    //       {
+    //         params: {
+    //           format: 'json',
+    //           lat: latitude,
+    //           lon: longitude,
+    //         },
+    //         headers: {
+    //           Accept: 'application/json',
+    //           'User-Agent': 'ReactNativeApp', // ✅ Required by Nominatim
+    //         },
+    //       },
+    //     );
+
+    //     const data = response.data;
+    //     setAddress(data.display_name || 'Unknown location');
+    //   } catch (error) {
+    //     console.error('Axios error fetching address:', error.message);
+    //     setAddress('Unable to fetch location');
+    //   }
+    // };
+
     const getAddressFromCoords = async (latitude, longitude, setAddress) => {
       if (!latitude || !longitude) {
         setAddress('Location not provided');
         return;
       }
+
       try {
         const response = await axios.get(
           `https://nominatim.openstreetmap.org/reverse`,
@@ -249,14 +279,23 @@ const AttendanceCard = ({item}) => {
               Accept: 'application/json',
               'User-Agent': 'ReactNativeApp', // ✅ Required by Nominatim
             },
+            timeout: 10000, // ⏳ 10s timeout
           },
         );
 
         const data = response.data;
         setAddress(data.display_name || 'Unknown location');
       } catch (error) {
-        console.error('Axios error fetching address:', error.message);
-        setAddress('Unable to fetch location');
+        if (error.message === 'Network Error') {
+          console.log('🌐 No internet connection');
+          setAddress('No internet connection. Please check your network.');
+        } else if (error.code === 'ECONNABORTED') {
+          console.log('⏳ Request timeout');
+          setAddress('Request timed out. Try again.');
+        } else {
+          console.error('Axios error fetching address:', error.message);
+          setAddress('Unable to fetch location');
+        }
       }
     };
 

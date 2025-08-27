@@ -150,10 +150,20 @@ const TodayResult = () => {
                   'CheckOut Failed',
                   'You Have Already Checked Out',
                 );
-
-                Alert.alert('You Have Already Checked Out');
-              } else {
+                // Alert.alert('You Have Already Checked Out');
+              } else if (TodayData?.checkIn?.time) {
+                // showErrorToast(
+                //   'Not CheckIn Today',
+                //   'You Have Not CheckIn Today',
+                // );
                 navigation.navigate('CheckOut');
+
+                // Alert.alert('You Have Already Checked Out');
+              } else {
+                showErrorToast(
+                  'Not CheckIn Today',
+                  'You Have Not CheckIn Today',
+                );
               }
             }}
             style={styles.profileContainer}>

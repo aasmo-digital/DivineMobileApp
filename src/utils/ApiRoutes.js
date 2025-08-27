@@ -6,7 +6,7 @@ export const ApiRoutes = {
   employeeCheckOut: AppConstant.BASEURL + '/api/attendance/checkout', //complete
   getMyAttendence: AppConstant.BASEURL + '/api/attendance/me', //complete
   getEmployeeInfo: AppConstant.BASEURL + '/api/auth/me', //complete
-  addTask: AppConstant.BASEURL + '/api/tasks',
+  addTask: AppConstant.BASEURL + '/api/tasks', 
   getEmployeeTasks: AppConstant.BASEURL + '/api/tasks/me',
   getAllSalarySlips: AppConstant.BASEURL + '',
 };

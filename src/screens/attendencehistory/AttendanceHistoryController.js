@@ -1,12 +1,11 @@
-import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import ApiRequest from '../../network/ApiRequest';
 import {ApiRoutes} from '../../utils/ApiRoutes';
 
 const AttendanceHistoryController = () => {
   const [attendance, setAttendance] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const token = useSelector(state => state?.user?.token); // Correct reducer key
 
   const getAllAttendanceRecord = async () => {
@@ -20,17 +19,18 @@ const AttendanceHistoryController = () => {
 
       if (response.status === 200 || response.status === 201) {
         setLoading(false);
-        // console.log(
-        //   '------getAllAttendanceRecord----response.data',
-        //   JSON.stringify(response?.data),
-        // );
         setAttendance(response?.data);
       } else {
+        setLoading(false);
+        setAttendance([]);
         console.error('Server error:', response?.message);
       }
     } catch (error) {
       setLoading(false);
+      setAttendance([]);
       console.error('Fetch Error:', error);
+    } finally {
+      setLoading(false);
     }
   };
   return {

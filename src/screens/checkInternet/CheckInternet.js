@@ -1,10 +1,8 @@
-
 import React from 'react';
 import {View, Text, StyleSheet, StatusBar, Image} from 'react-native';
- 
 import imageindex from '../../assets/images/imageindex';
- import Fonts from '../../theme/Fonts';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Fonts from '../../theme/Fonts';
+import {Colors} from '../../theme/colors';
 
 const CheckInternet = () => {
   return (

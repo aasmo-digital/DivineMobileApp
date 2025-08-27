@@ -12,6 +12,8 @@ export const Colors = {
   BLUE: '#0038FF',
   SKYBLUE: 'skyblue',
   LIGHT_GRAY: '#ddd',
+  EXTRA_LIGHT_GRAY: '#eee',
+
   TEXT_COLOR: '#0E121E',
   TRANSPARENT: 'rgba(0,0,0,0.2)',
   LIGHT_BLACK: '#333',
